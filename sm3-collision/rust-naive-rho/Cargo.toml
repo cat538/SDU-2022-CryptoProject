@@ -1,0 +1,11 @@
+[package]
+name = "sm3-collision-brute-force"
+version = "0.1.0"
+edition = "2021"
+authors = ["cat538 <1350359575@qq.com>"]
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+sm3="0.3.0"
+hex="0.4.3"
+rand="0.8.4"
