@@ -13,14 +13,16 @@
 
   📢OpenMP parallel computing
 
-- [ ] Implement the Rho method of reduced `SM3`
+  📢Rust version multithreading attack with `std::thread `is done
 
-- [ ] Implement length extension attack for `SM3`, `SHA256`, etc.
+- [x] Implement the Rho method of reduced `SM3`
 
-- [ ] Do your best to optimize `SM3` implementation (software)
+- [x] Implement length extension attack for `SM3`, `SHA256`, etc.
+
+- [x] Do your best to optimize `SM3` implementation (software)
 
 - [ ] Implement Merkle Tree following **RFC6962**
 
-  - Construct a Merkle tree with 10w leaf nodes
-  - Build inclusion proof for specified element
-  - Build exclusion proof for specified element  
+  > - Construct a Merkle tree with 10w leaf nodes
+  > - Build inclusion proof for specified element
+  > - Build exclusion proof for specified element  
