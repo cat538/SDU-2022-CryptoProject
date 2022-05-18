@@ -7,7 +7,7 @@ pub mod brute_force;
 pub mod utils;
 use utils::*;
 
-const COLLISION_LEN: usize = 48;
+const COLLISION_LEN: usize = 40;
 const STORE_LEN: usize = const_ceil(COLLISION_LEN);
 
 /// **return**
@@ -41,7 +41,9 @@ fn build_collision_table() -> ([u8; 32], HashMap<[u8; STORE_LEN], u64>) {
         let out = hasher.finalize_reset();
         key.clone_from_slice(&out[0..STORE_LEN]);
         map.insert(assist(key), offset);
-        unsafe {*(rand_in.as_ptr() as *mut u64) += 1}
+        unsafe {
+            *(rand_in.as_ptr() as *mut u64) += 1;
+        }
         offset += 1;
     }
     println!("table size:{}", map.len());
@@ -59,12 +61,10 @@ fn find_collision_birthday(
     let mut k = [0u8; STORE_LEN];
     let mut cnt = 0;
 
-    let mut t1 = time::Instant::now();
     let (base, map) = start_msg;
-    let mut t2 = t1.elapsed();
-    println!("build table cost: {:?}", t2);
 
-    t1 = time::Instant::now();
+    let t1 = time::Instant::now();
+    let t2;
     loop {
         cnt += 1;
         unsafe {*(collision.as_ptr() as *mut u128) += 1}
@@ -74,7 +74,9 @@ fn find_collision_birthday(
         if let Some(pre) = map.get(&k) {
             t2 = t1.elapsed();
             // println!("k: {}", hex::encode_upper(k));
-            unsafe {*(base.as_ptr() as *mut u64) += pre}
+            unsafe {
+                *(base.as_ptr() as *mut u64) += pre;
+            }
             hasher.update(&base);
             let pre_out = hasher.finalize_reset();
             println!(
@@ -86,6 +88,7 @@ fn find_collision_birthday(
                 hex::encode_upper(&out)
             );
             break;
+            // return t2;
         }
     }
     println!("Got {COLLISION_LEN} bits collision");
@@ -94,10 +97,8 @@ fn find_collision_birthday(
 }
 
 /// multithread impl for birthday attack
-/// 2022-5-16: pref badly
-#[allow(unused)]
 fn find_collision_multi(start_msg: &([u8; 32], HashMap<[u8; STORE_LEN], u64>)) {
-    let thread_num = 2;
+    let thread_num = 4;
     let mut rng = thread_rng();
     let mut start_values = Vec::with_capacity(thread_num);
     for _ in 0..thread_num {
@@ -106,17 +107,15 @@ fn find_collision_multi(start_msg: &([u8; 32], HashMap<[u8; STORE_LEN], u64>)) {
         start_values.push(tmp);
     }
 
-    let mut t1 = time::Instant::now();
     let (base, map) = start_msg.clone();
     let shared_map = Arc::new(map);
-    let mut t2 = t1.elapsed();
-    println!("table size: {}", shared_map.len());
-    println!("build table cost: {:?}", t2);
+    
 
     let mut threads = Vec::with_capacity(thread_num);
     let (tx, rx) = channel();
 
-    t1 = time::Instant::now();
+    let t1 = time::Instant::now();
+    let t2;
     for i in 0..thread_num {
         let local_table = shared_map.clone();
         let mut local_start = [0u8; 32];
@@ -132,7 +131,9 @@ fn find_collision_multi(start_msg: &([u8; 32], HashMap<[u8; STORE_LEN], u64>)) {
                 let local_out = hasher.finalize_reset();
                 k.clone_from_slice(&local_out[0..STORE_LEN]);
                 if let Some(pre) = local_table.get(&k) {
-                    unsafe {*(base.as_ptr() as *mut u64) += pre}
+                    unsafe {
+                        *(base.as_ptr() as *mut u64) += pre;
+                    }
                     hasher.update(&base);
                     let pre_out = hasher.finalize_reset();
                     local_tx
@@ -147,7 +148,9 @@ fn find_collision_multi(start_msg: &([u8; 32], HashMap<[u8; STORE_LEN], u64>)) {
             }
         }));
     }
-
+    // for i in threads {
+    //     i.join().unwrap();
+    // }
     if let Ok(msg) = rx.recv() {
         t2 = t1.elapsed();
         println!(
@@ -169,8 +172,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("SM3 output size: {dgst_len} bytes");
     // find_collision_brute_force(12);
     let table = build_collision_table();
+    println!(">>>Single thread :");
     find_collision_birthday(&table);
-    // find_collision_multi(&table);
+    println!(">>>Multi  threads:");
+    find_collision_multi(&table);
 
     // let mut acc = time::Duration::new(0,0);
     // for _ in 0..20{
