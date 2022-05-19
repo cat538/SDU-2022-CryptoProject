@@ -6,10 +6,8 @@ use std::time;
 
 #[allow(unused)]
 fn find_collision_brute_force(bit_len: usize) {
-    let dgst = Sm3::digest(b"dmhj");
-    let mut target = [0u8; 32];
-    target.clone_from_slice(&dgst[0..]);
-    println!("target:\t\t{}", hex::encode_upper(&dgst));
+    let mut target = Sm3::digest(b"dmhj");
+    println!("target:\t\t{}", hex::encode_upper(&target));
 
     let mut rng = thread_rng();
     let mut hasher = Sm3::new();
@@ -21,7 +19,9 @@ fn find_collision_brute_force(bit_len: usize) {
     let t1 = time::Instant::now();
     loop {
         cnt += 1;
-        unsafe {*(collision.as_ptr() as *mut u128) += 1}
+        unsafe {
+            *(collision.as_ptr() as *mut u128) += 1;
+        }
         hasher.update(collision);
         out = hasher.finalize_reset();
         if bit_cmp(&target, &out, bit_len) {
