@@ -65,9 +65,13 @@ static uint32_t SM4_T(uint32_t x)
     x3 ^= F(x0 ^ x1 ^ x2 ^ ks->rk[k3]); \
   } while(0)
 
+void sm4_basic_encrypt_block(const uint8_t *in, uint8_t *out, const sm4_key_t *ks,size_t blocks){
+    for (int i = 0; i < blocks; i++) {
+        sm4_basic_encrypt(in+ 16*i, out + 16*i, ks);
+    }
+}
 
-
-void sm4_encrypt(const uint8_t *in, uint8_t *out, const sm4_key_t *ks)
+void sm4_basic_encrypt(const uint8_t *in, uint8_t *out, const sm4_key_t *ks)
 //const uint32_t ks->rk[SM4_KEY_SCHEDULE], const uint8_t *in, uint8_t *out)
 {
   uint32_t x0, x1, x2, x3;
@@ -92,7 +96,7 @@ void sm4_encrypt(const uint8_t *in, uint8_t *out, const sm4_key_t *ks)
   store_u32_be(x0, out + 12);
 }
 
-void sm4_decrypt(const uint8_t *in, uint8_t *out, const sm4_key_t *ks){
+void sm4_basic_decrypt(const uint8_t *in, uint8_t *out, const sm4_key_t *ks){
   uint32_t x0, x1, x2, x3;
 
   x0 = load_u32_be(in, 0);

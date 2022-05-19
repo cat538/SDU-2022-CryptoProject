@@ -14,8 +14,6 @@ static  uint32_t SM4_T(uint32_t x)
            SM4_TBOX3[(uint8_t)x];
 }
 
-
-
 #define SM4_ROUNDS(k0, k1, k2, k3, F)   \
   do {                                  \
     x0 ^= F(x1 ^ x2 ^ x3 ^ ks->rk[k0]); \
@@ -24,7 +22,11 @@ static  uint32_t SM4_T(uint32_t x)
     x3 ^= F(x0 ^ x1 ^ x2 ^ ks->rk[k3]); \
   } while(0)
 
-
+void sm4_T_encrypt_block(const uint8_t *in, uint8_t *out, const sm4_key_t *ks, size_t block){
+    for (int i = 0; i < block; i++) {
+        sm4_T_encrypt(in+ 16*i, out + 16*i, ks);
+    }
+}
 
 void sm4_T_encrypt(const uint8_t *in, uint8_t *out, const sm4_key_t *ks)
 //const uint32_t ks->rk[SM4_KEY_SCHEDULE], const uint8_t *in, uint8_t *out)
