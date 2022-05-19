@@ -94,7 +94,6 @@ static void sm4_T_speed(benchmark::State& state) {
 }
 
 
-
 static void sm4_avx2_speed(benchmark::State& state) {
     sm4_set_key(user_key,&key);
     size_t blocks = sizeof(plaintext)/SM4_BLOCK_SIZE;
@@ -103,7 +102,18 @@ static void sm4_avx2_speed(benchmark::State& state) {
     }
     //state.counters["Rate"] = benchmark::Counter(sizeof(plaintext)/1e6, benchmark::Counter::kIsRate);
 }
+
+
+static void sm4_aesni_speed(benchmark::State& state) {
+    sm4_set_key(user_key,&key);
+    size_t blocks = sizeof(plaintext)/SM4_BLOCK_SIZE;
+    for (auto _ : state) {
+        sm4_ni_encrypt_block(plaintext, buf, &key,blocks);
+    }
+    //state.counters["Rate"] = benchmark::Counter(sizeof(plaintext)/1e6, benchmark::Counter::kIsRate);
+}
 BENCHMARK(sm4_basic_speed);
 BENCHMARK(sm4_T_speed);
 BENCHMARK(sm4_avx2_speed);
+BENCHMARK(sm4_aesni_speed);
 BENCHMARK_MAIN();

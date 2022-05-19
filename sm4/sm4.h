@@ -58,29 +58,8 @@ void sm4_T_encrypt_block(const unsigned char* in, unsigned char* out,
     const sm4_key_t *key, size_t block);
 void sm4_T_encrypt(const unsigned char in[16], unsigned char out[16],
     const sm4_key_t *key);
-void sm4_avx2_encrypt(const unsigned char *in, unsigned char *out, const sm4_key_t *key);
 
 void sm4_avx2_encrypt_block(const unsigned char *in, unsigned char *out, const sm4_key_t *key, size_t block);
+void sm4_ni_encrypt_block(const unsigned char *in, unsigned char *out, const sm4_key_t *key, size_t blocks);
 
-// # define SM4_decrypt(in,out,key)  sm4_encrypt(in,out,key)
-
-
-// void sm4_ecb_encrypt(const unsigned char *in, unsigned char *out,
-//     const sm4_key_t *key, int enc);
-// void sm4_cbc_encrypt(const unsigned char *in, unsigned char *out,
-//     size_t len, const sm4_key_t *key, unsigned char *iv, int enc);
-// void sm4_cfb128_encrypt(const unsigned char *in, unsigned char *out,
-//     size_t len, const sm4_key_t *key, unsigned char *iv, int *num, int enc);
-
-// int sm4_wrap_key(sm4_key_t *key, const unsigned char *iv,
-//     unsigned char *out, const unsigned char *in, unsigned int inlen);
-// int sm4_unwrap_key(sm4_key_t *key, const unsigned char *iv,
-//     unsigned char *out, const unsigned char *in, unsigned int inlen);
-
-// void sm4_ctr32_encrypt_blocks(const unsigned char *in, unsigned char *out,
-//     size_t blocks, const sm4_key_t *key, const unsigned char iv[16]);
-
-
-
-// void speedtest();
 #endif /* SM4_h */

@@ -19,6 +19,8 @@ int main(int argc, const char * argv[]) {
     test_sm4(sm4_T_encrypt_block);
     printf("\n------  sm4_avx2_test: \n ------");
     test_sm4(sm4_avx2_encrypt_block);
+    printf("\n------  sm4_aesni_test: \n ------");
+    test_sm4(sm4_ni_encrypt_block);
 }
 
 
