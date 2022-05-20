@@ -1,0 +1,17 @@
+[package]
+name = "sm3-impl-cmp"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+sm3="0.3.0"
+sha2="0.9.5"
+sha3="0.9.1"
+rand="0.8.4"
+criterion = "0.3.5"
+
+[[bench]]
+name = "my_benchmark"
+harness = false
