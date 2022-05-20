@@ -12,13 +12,71 @@
 extern const uint8_t SM4_S[256]; //S盒
 extern const uint32_t SM4_T[256]; //T置换
 extern const uint32_t SM4_D[65536];
-# define ROL32(a,n)     (((a)<<(n))|(((a)&0xffffffff)>>(32-(n))))
 
-#define S32(A)                    \
-    ((SM4_S[((A) >> 24)       ] << 24) ^    \
-     (SM4_S[((A) >> 16) & 0xff] << 16) ^    \
-     (SM4_S[((A) >>  8) & 0xff] <<  8) ^    \
-     (SM4_S[((A))       & 0xff]))
+# define _mm_rotl_epi32(a, i)    _mm_xor_si128(            \
+    _mm_slli_epi32(a, i), _mm_srli_epi32(a, 32 - i))
+
+# define _mm256_rotl_epi32(a, i)    _mm256_xor_si256(            \
+    _mm256_slli_epi32(a, i), _mm256_srli_epi32(a, 32 - i))
+
+#define GET_BLKS(x0, x1, x2, x3, in)                    \
+    t0 = _mm_i32gather_epi32((int *)(in+4*0), vindex, 4);    \
+    t1 = _mm_i32gather_epi32((int *)(in+4*1), vindex, 4);    \
+    t2 = _mm_i32gather_epi32((int *)(in+4*2), vindex, 4);    \
+    t3 = _mm_i32gather_epi32((int *)(in+4*3), vindex, 4);    \
+    x0 = _mm_shuffle_epi8(t0, vindex_swap);            \
+    x1 = _mm_shuffle_epi8(t1, vindex_swap);            \
+    x2 = _mm_shuffle_epi8(t2, vindex_swap);            \
+    x3 = _mm_shuffle_epi8(t3, vindex_swap)
+    
+# define PUT_BLKS(out, x0, x1, x2, x3)                    \
+    t0 = _mm_shuffle_epi8(x0, vindex_swap);            \
+    t1 = _mm_shuffle_epi8(x1, vindex_swap);            \
+    t2 = _mm_shuffle_epi8(x2, vindex_swap);            \
+    t3 = _mm_shuffle_epi8(x3, vindex_swap);            \
+    _mm_storeu_si128((__m128i *)(out+16*0), t0);            \
+    _mm_storeu_si128((__m128i *)(out+16*1), t1);            \
+    _mm_storeu_si128((__m128i *)(out+16*2), t2);            \
+    _mm_storeu_si128((__m128i *)(out+16*3), t3);            \
+    x0 = _mm_i32gather_epi32((int *)(out+4*0), vindex_read, 4);    \
+    x1 = _mm_i32gather_epi32((int *)(out+4*1), vindex_read, 4);    \
+    x2 = _mm_i32gather_epi32((int *)(out+4*2), vindex_read, 4);    \
+    x3 = _mm_i32gather_epi32((int *)(out+4*3), vindex_read, 4);    \
+    _mm_storeu_si128((__m128i *)(out+16*0), x0);            \
+    _mm_storeu_si128((__m128i *)(out+16*1), x1);            \
+    _mm_storeu_si128((__m128i *)(out+16*2), x2);            \
+    _mm_storeu_si128((__m128i *)(out+16*3), x3)
+
+
+
+#define GET_BLKS256(x0, x1, x2, x3, in)                    \
+    t0 = _mm256_i32gather_epi32((int *)(in+4*0), vindex, 4);    \
+    t1 = _mm256_i32gather_epi32((int *)(in+4*1), vindex, 4);    \
+    t2 = _mm256_i32gather_epi32((int *)(in+4*2), vindex, 4);   \
+    t3 = _mm256_i32gather_epi32((int *)(in+4*3), vindex, 4);    \
+    x0 = _mm256_shuffle_epi8(t0, vindex_swap);            \
+    x1 = _mm256_shuffle_epi8(t1, vindex_swap);            \
+    x2 = _mm256_shuffle_epi8(t2, vindex_swap);            \
+    x3 = _mm256_shuffle_epi8(t3, vindex_swap)
+    
+
+# define PUT_BLKS256(out, x0, x1, x2, x3)                    \
+    t0 = _mm256_shuffle_epi8(x0, vindex_swap);            \
+    t1 = _mm256_shuffle_epi8(x1, vindex_swap);            \
+    t2 = _mm256_shuffle_epi8(x2, vindex_swap);            \
+    t3 = _mm256_shuffle_epi8(x3, vindex_swap);            \
+    _mm256_storeu_si256((__m256i *)(out+32*0), t0);            \
+    _mm256_storeu_si256((__m256i *)(out+32*1), t1);            \
+    _mm256_storeu_si256((__m256i *)(out+32*2), t2);            \
+    _mm256_storeu_si256((__m256i *)(out+32*3), t3);            \
+    x0 = _mm256_i32gather_epi32((int *)(out+8*0), vindex_read, 4);    \
+    x1 = _mm256_i32gather_epi32((int *)(out+8*1), vindex_read, 4);    \
+    x2 = _mm256_i32gather_epi32((int *)(out+8*2), vindex_read, 4);    \
+    x3 = _mm256_i32gather_epi32((int *)(out+8*3), vindex_read, 4);    \
+    _mm256_storeu_si256((__m256i *)(out+32*0), x0);            \
+    _mm256_storeu_si256((__m256i *)(out+32*1), x1);            \
+    _mm256_storeu_si256((__m256i *)(out+32*2), x2);            \
+    _mm256_storeu_si256((__m256i *)(out+32*3), x3)
 
 #define ROUNDS(x0, x1, x2, x3, x4)        \
     ROUND(x0, x1, x2, x3, x4, 0);        \

@@ -15,6 +15,7 @@
 # define SM4_NUM_ROUNDS        32
 # include <string.h>
 #include <stdint.h>   
+#include <stdio.h>
 typedef unsigned int u32;
 typedef unsigned char u8;
 
@@ -62,4 +63,7 @@ void sm4_T_encrypt(const unsigned char in[16], unsigned char out[16],
 void sm4_avx2_encrypt_block(const unsigned char *in, unsigned char *out, const sm4_key_t *key, size_t block);
 void sm4_ni_encrypt_block(const unsigned char *in, unsigned char *out, const sm4_key_t *key, size_t blocks);
 
+void sm4_avx2ni_encrypt_block(const unsigned char *in, unsigned char *out, const sm4_key_t *key, size_t blocks);
+
+void printLineItem(unsigned char* addr,int len,int colSize);
 #endif /* SM4_h */

@@ -11,7 +11,24 @@
 #include "sm4.h"
 //#define sm4_AVX2 1
 void test_sm4(void (*sm4_enc) (const uint8_t*, uint8_t*, const sm4_key_t*,size_t blocks));
-void printLineItem(unsigned char* addr,int len,int colSize);
+void printLineItem(unsigned char* addr,int len,int colSize)
+{
+    if(len)
+    {
+        int col=len>=colSize?colSize:len;
+        
+        for(int i=0;i<col;i++)
+            printf("%02x ",*((unsigned char*)addr+i));
+ 
+        for(int i=0;i<(colSize-col);i++)
+            printf("   ");
+        
+        printf("\n");
+        
+        printLineItem(addr+col,len-col,colSize);
+    }
+    
+}
 int main(int argc, const char * argv[]) {
     printf("------  sm4_basic_test: \n ------");
     test_sm4(sm4_basic_encrypt_block);
@@ -21,6 +38,8 @@ int main(int argc, const char * argv[]) {
     test_sm4(sm4_avx2_encrypt_block);
     printf("\n------  sm4_aesni_test: \n ------");
     test_sm4(sm4_ni_encrypt_block);
+    printf("\n------  sm4_avx2ni_test: \n ------");
+    test_sm4(sm4_avx2ni_encrypt_block);
 }
 
 

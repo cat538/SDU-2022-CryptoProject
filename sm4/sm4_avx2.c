@@ -10,42 +10,6 @@
 #include "sm4_constant.h"
 #include "sm4_local.h"
 #include <immintrin.h>
-#include <stdio.h>
-void printLineItem(unsigned char* addr,int len,int colSize);
-#define GET_BLKS(x0, x1, x2, x3, in)                    \
-    t0 = _mm256_i32gather_epi32((int *)(in+4*0), vindex, 4);    \
-    t1 = _mm256_i32gather_epi32((int *)(in+4*1), vindex, 4);    \
-    t2 = _mm256_i32gather_epi32((int *)(in+4*2), vindex, 4);   \
-    t3 = _mm256_i32gather_epi32((int *)(in+4*3), vindex, 4);    \
-    x0 = _mm256_shuffle_epi8(t0, vindex_swap);            \
-    x1 = _mm256_shuffle_epi8(t1, vindex_swap);            \
-    x2 = _mm256_shuffle_epi8(t2, vindex_swap);            \
-    x3 = _mm256_shuffle_epi8(t3, vindex_swap)
-    
-
-#define GET_BLKS1(x0, x1, x2, x3, in)                    \
-    x0 = _mm256_mask_i32gather_epi32(x0,(int *)(in+4*0), vindex_swap, vindex, 4);    \
-    x1 = _mm256_mask_i32gather_epi32(x1,(int *)(in+4*1), vindex_swap, vindex, 4);    \
-    x2 = _mm256_mask_i32gather_epi32(x2,(int *)(in+4*2), vindex_swap, vindex, 4);   \
-    x3 = _mm256_mask_i32gather_epi32(x3,(int *)(in+4*3), vindex_swap, vindex, 4);   
-
-# define PUT_BLKS(out, x0, x1, x2, x3)                    \
-    t0 = _mm256_shuffle_epi8(x0, vindex_swap);            \
-    t1 = _mm256_shuffle_epi8(x1, vindex_swap);            \
-    t2 = _mm256_shuffle_epi8(x2, vindex_swap);            \
-    t3 = _mm256_shuffle_epi8(x3, vindex_swap);            \
-    _mm256_storeu_si256((__m256i *)(out+32*0), t0);            \
-    _mm256_storeu_si256((__m256i *)(out+32*1), t1);            \
-    _mm256_storeu_si256((__m256i *)(out+32*2), t2);            \
-    _mm256_storeu_si256((__m256i *)(out+32*3), t3);            \
-    x0 = _mm256_i32gather_epi32((int *)(out+8*0), vindex_read, 4);    \
-    x1 = _mm256_i32gather_epi32((int *)(out+8*1), vindex_read, 4);    \
-    x2 = _mm256_i32gather_epi32((int *)(out+8*2), vindex_read, 4);    \
-    x3 = _mm256_i32gather_epi32((int *)(out+8*3), vindex_read, 4);    \
-    _mm256_storeu_si256((__m256i *)(out+32*0), x0);            \
-    _mm256_storeu_si256((__m256i *)(out+32*1), x1);            \
-    _mm256_storeu_si256((__m256i *)(out+32*2), x2);            \
-    _mm256_storeu_si256((__m256i *)(out+32*3), x3)
 
 
 
@@ -55,7 +19,7 @@ void printLineItem(unsigned char* addr,int len,int colSize);
 # define INDEX_MASK_TBOX 0xff
 
 
-# define ROUND_TBOX(x0, x1, x2, x3, x4, i)                \
+# define AVX2NI_T(x0, x1, x2, x3, x4, i)                \
     t0 = _mm256_set1_epi32(*(rk + i));                \
     t1 = _mm256_xor_si256(x1, x2);                    \
     t2 = _mm256_xor_si256(x3, t0);                    \
@@ -75,7 +39,7 @@ void printLineItem(unsigned char* addr,int len,int colSize);
     t1 = _mm256_i32gather_epi32((int *)SM4_TBOX0, x4, 4);        \
     x4 = _mm256_xor_si256(x0, t1)
 
-# define ROUND ROUND_TBOX
+# define ROUND AVX2NI_T
 
 # define INDEX_MASK INDEX_MASK_TBOX
 
@@ -94,9 +58,9 @@ void sm4_avx2_encrypt_block(const unsigned char *in, unsigned char *out, const s
         3,2,1,0,7,6,5,4,11,10,9,8,15,14,13,12
     );
     while (blocks >= 8) {
-        GET_BLKS(x0, x1, x2, x3, in);
+        GET_BLKS256(x0, x1, x2, x3, in);
         ROUNDS(x0, x1, x2, x3, x4);
-        PUT_BLKS(out, x0, x4, x3, x2);
+        PUT_BLKS256(out, x0, x4, x3, x2);
         in += 128;
         out += 128;
         blocks -= 8;
@@ -110,22 +74,3 @@ void sm4_avx2_encrypt_block(const unsigned char *in, unsigned char *out, const s
 }
 
 
-
-void printLineItem(unsigned char* addr,int len,int colSize)
-{
-    if(len)
-    {
-        int col=len>=colSize?colSize:len;
-        
-        for(int i=0;i<col;i++)
-            printf("%02x ",*((unsigned char*)addr+i));
- 
-        for(int i=0;i<(colSize-col);i++)
-            printf("   ");
-        
-        printf("\n");
-        
-        printLineItem(addr+col,len-col,colSize);
-    }
-    
-}
