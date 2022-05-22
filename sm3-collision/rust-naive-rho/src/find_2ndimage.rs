@@ -5,7 +5,7 @@ use sm3::{Digest, Sm3};
 use std::time;
 
 #[allow(unused)]
-fn find_collision_brute_force(bit_len: usize) {
+fn find_2ndimage_bf(bit_len: usize) {
     let mut target = Sm3::digest(b"dmhj");
     println!("target:\t\t{}", hex::encode_upper(&target));
 
@@ -19,9 +19,7 @@ fn find_collision_brute_force(bit_len: usize) {
     let t1 = time::Instant::now();
     loop {
         cnt += 1;
-        unsafe {
-            *(collision.as_ptr() as *mut u128) += 1;
-        }
+        unsafe { *(collision.as_ptr() as *mut u128) += 1 }
         hasher.update(collision);
         out = hasher.finalize_reset();
         if bit_cmp(&target, &out, bit_len) {
