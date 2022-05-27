@@ -42,7 +42,7 @@ int main(int argc, char **argv)
 	SM3_CTX sm3_ctx;
 	std::string plain= "bithday attack for SM3 HASH";
 	uint8_t buf[4096];
-	ssize_t len;
+	size_t len;
 	uint8_t dgst[32];
 	int i;
 	memcpy(buf,plain.c_str(),plain.size());

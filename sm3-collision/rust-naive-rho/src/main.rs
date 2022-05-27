@@ -8,7 +8,7 @@ pub mod find_2ndimage;
 pub mod utils;
 use utils::*;
 
-const COLLISION_LEN: usize = 50;
+const COLLISION_LEN: usize = 48;
 const STORE_LEN: usize = const_ceil(COLLISION_LEN);
 
 /// **return**
@@ -162,9 +162,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("SM3 output size: {dgst_len} bytes");
     // find_2ndimage_bf(12);
     let table = build_collision_table();
-    // println!(">>>Single thread :");
-    // find_collision_birthday(&table);
-    println!(">>>Multi  threads:");
-    find_collision_multi(&table);
+    println!(">>>Single thread :");
+    find_collision_birthday(&table);
+    // println!(">>>Multi  threads:");
+    // find_collision_multi(&table);
     Ok(())
 }

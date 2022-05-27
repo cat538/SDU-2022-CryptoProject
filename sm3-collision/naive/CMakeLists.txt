@@ -66,14 +66,20 @@ endif()
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/out)
 
 # 查找当前目录下的所有源文件, 保存到 DIR_SRCS
-aux_source_directory(./src DIR_SRCS)
+
 
 # 将源代码添加到此项目的可执行文件。
-add_executable (${CMAKE_PROJECT_NAME} ${DIR_SRCS})
-
+if (CMAKE_SYSTEM_NAME MATCHES "Linux")
+    add_executable (${CMAKE_PROJECT_NAME} ${CMAKE_SOURCE_DIR}/src/sm3_attack.cpp)
+elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
+    add_executable (${CMAKE_PROJECT_NAME} ${CMAKE_SOURCE_DIR}/src/sm3_attack_win.cpp)
+endif()
 
 include(FindAVX)
 check_for_avx(${CMAKE_PROJECT_NAME})
+
+
+
 if (HAVE_AVX2_EXTENSIONS)
     target_compile_options(${CMAKE_PROJECT_NAME} PUBLIC -D_AVX2_)
     message(STATUS "optimization simd=AVX2")
@@ -83,7 +89,13 @@ elseif(HAVE_AVX_EXTENSIONS)
 endif()
 
 # 链接库
-target_link_libraries(${CMAKE_PROJECT_NAME} gmssl -lomp)
+
+if (CMAKE_SYSTEM_NAME MATCHES "Linux")
+    target_link_libraries(${CMAKE_PROJECT_NAME} gmssl -lomp)
+elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
+    target_link_libraries(${CMAKE_PROJECT_NAME} libcrypto)
+endif()
+
 
 # # 包含子项目
 # add_subdirectory ("subproject")

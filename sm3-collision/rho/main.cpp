@@ -79,7 +79,7 @@ int main(int argc, char** argv)
 	size_t cmp_len = 2;
 
 	item* Rho = new item[Rho_length];
-	sm3(msg, strlen((const char*)msg), Rho[0].dgst);
+	sm3(msg, strlen(msg), Rho[0].dgst);
 	int i = 0;
 	while (memcmp(Rho[i].dgst, Rho[(i + 1) % Rho_length].dgst, cmp_len) != 0) {
 		sm3(Rho[i].dgst, SM3_DIGEST_LENGTH, Rho[(i + 1) % Rho_length].dgst);
