@@ -55,6 +55,6 @@
 
 - [ ] Implement `SM2` 2P sign with real network communication
 
-- [ ] PoC impl of the scheme, or do implement analysis by Google
+- [x] PoC impl of the scheme, or do implement analysis by Google
 
 - [ ] Implement `SM2` 2P decrypt with real network communication
