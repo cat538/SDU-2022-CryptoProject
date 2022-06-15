@@ -28,10 +28,12 @@ void Server::set_gen(){
     
     BN_CTX_free(ctx);
 }
-
+ 
 void Server::run(std::vector<std::pair<uint16_t, EC_POINT*> > &kv_pair){
     BN_CTX* ctx = BN_CTX_new();
     set_gen();
+    
+
     for(auto i: kv_pair){
         if(sets.find(i.first)!=sets.end()){
             std::vector<EC_POINT*> subset_in = sets[i.first];
@@ -63,6 +65,52 @@ void Server::run(std::vector<std::pair<uint16_t, EC_POINT*> > &kv_pair){
         }
 
     }
+    
+
     BN_CTX_free(ctx);
 
+}
+
+std::vector<std::pair<uint16_t, EC_POINT*> > Server::NetIN_kvpair(){
+    
+    size_t client_len;
+    server_port->ReceiveInteger(client_len);
+
+    std::string in_str;
+    in_str.resize(66);
+    uint16_t k;
+    std::vector<std::pair<uint16_t, EC_POINT*> > out;
+    for(int i=0;i<client_len;i++){
+        EC_POINT* v = EC_POINT_new(curve);
+        server_port->ReceiveInteger(k);
+        server_port->ReceiveString(in_str);
+        EC_POINT_hex2point(curve,in_str.c_str(),v,NULL);
+        out.emplace_back(std::make_pair(k,v));
+    }
+    return out;
+
+}
+
+void Server::NetOUT_flag_S_h(){
+    size_t len = h_ex_ab.size();
+    for(size_t i=0;i<len;i++){
+        uint64_t send_len = h_ex_ab[i].size();
+        server_port->SendInteger(send_len);
+
+        for(size_t j = 0; j <send_len ; j++){
+            auto out_str = std::string(EC_POINT_point2hex(curve,h_ex_ab[i][j],POINT_CONVERSION_COMPRESSED,NULL));
+            server_port->SendString(out_str);
+        }
+    }
+    for(size_t i=0;i<len;i++){
+        size_t send_len = S[i].size();
+        server_port->SendInteger(send_len);
+        for(size_t j = 0; j <send_len ; j++){
+            auto out_str = std::string(EC_POINT_point2hex(curve,S[i][j],POINT_CONVERSION_COMPRESSED,NULL));
+            server_port->SendString(out_str);
+        }
+    }
+    for(size_t i=0;i<len;i++){
+        server_port->SendInteger(flag[i]);
+    }
 }

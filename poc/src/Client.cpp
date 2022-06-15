@@ -87,19 +87,70 @@ void Client::run(){
         ka_pair.insert(std::make_pair(k[i],a[i]));
     }
     BN_CTX_free(ctx);
+    NetOUT_kv_pair();
 }
 
 std::vector<std::pair<uint16_t, EC_POINT*> > Client::output(){
     std::vector<std::pair<uint16_t, EC_POINT*> > out;
+    
     for(int i = 0;i<data_len;i++){
         out.emplace_back(std::make_pair(k[i],v[i]));
     }
+    //cli_port.SendBytes((void*)k.data(),sizeof(k));
     return out;
 }
 
-void Client::get_ins(std::vector<uint16_t> &flag,std::vector<std::vector<EC_POINT*> > S,std::vector<std::vector<EC_POINT*> > h_ex_ab,size_t sets_len){
+void Client::NetOUT_kv_pair(){
+
+    std::string out_str;
+    cli_port->SendInteger(data_len);
+
+    for(int i = 0;i<data_len;i++){
+        cli_port->SendInteger(k[i]);
+
+        out_str = std::string(EC_POINT_point2hex(curve,v[i],POINT_CONVERSION_COMPRESSED,NULL));
+        cli_port->SendString(out_str);
+    }
+   
+}
+
+void Client::NetIN_flag_S_h(std::vector<uint16_t> &flag,std::vector<std::vector<EC_POINT*> > &S,std::vector<std::vector<EC_POINT*> > &h_ex_ab){
+
+    h_ex_ab.resize(data_len);
+    std::string in_str;
+    in_str.resize(66);
+    for(int i = 0; i <data_len;i++){
+        uint64_t receive_len = 0;
+        
+        cli_port->ReceiveInteger(receive_len);
+        for(uint64_t j = 0; j <receive_len ; j++){
+            cli_port->ReceiveString(in_str);
+            EC_POINT* temp = EC_POINT_new(curve);
+            EC_POINT_hex2point(curve,in_str.c_str(),temp,NULL);
+            h_ex_ab[i].emplace_back(temp);
+        }
+    }
+    S.resize(data_len);
+    for(int i = 0; i <data_len;i++){
+        size_t receive_len;
+        cli_port->ReceiveInteger(receive_len);
+        for(size_t j = 0; j <receive_len ; j++){
+            cli_port->ReceiveString(in_str);
+            EC_POINT* temp = EC_POINT_new(curve);
+            EC_POINT_hex2point(curve,in_str.c_str(),temp,NULL);
+            S[i].emplace_back(temp);
+        }
+    }
+    for(int i = 0; i <data_len;i++){
+        uint16_t receive_flag;
+        cli_port->ReceiveInteger(receive_flag);
+        flag.emplace_back(receive_flag);
+    }
+}
+
+void Client::get_ins(std::vector<uint16_t> &flag,std::vector<std::vector<EC_POINT*> > S,std::vector<std::vector<EC_POINT*> > h_ex_ab){
     BN_CTX* ctx = BN_CTX_new();
-    for(size_t i = 0;i<sets_len;i++){
+    for(size_t i = 0;i<data_len;i++){
         
 
         auto hab_set = h_ex_ab[i];
