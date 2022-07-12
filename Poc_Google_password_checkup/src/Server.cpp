@@ -6,11 +6,20 @@ void Server::set_gen(){
     uint32_t out_size = 32;
     BIGNUM* bn = BN_new();
     
+    uint8_t salt[SALTLEN];
+    memset( salt, 0x00, SALTLEN );
+    uint32_t t_cost = 2;            // 2-pass computation
+    uint32_t m_cost = (1<<16);      // 64 mebibytes memory usage
+    uint32_t parallelism = 4;       // number of threads and lanes
+
     uint16_t k = 1;
     for(auto x:data){
         EC_POINT* h = EC_POINT_new(curve);
         BN_clear(bn);
-        EVP_Digest(&x,8,hash_value,&out_size,EVP_sha256(),NULL);
+
+        // EVP_Digest(&x,8,hash_value,&out_size,EVP_sha256(),NULL);
+        argon2i_hash_raw(t_cost, m_cost, parallelism, &x, 8, salt, SALTLEN, hash_value, out_size);
+
         BN_bin2bn(hash_value,16,bn);
         k = (((hash_value[1]<<8)|hash_value[0])&(mask));
         
@@ -23,6 +32,7 @@ void Server::set_gen(){
         else{
             sets[k].emplace_back(h);
         }
+       
     }
     BN_free(bn);
     
@@ -87,15 +97,21 @@ std::vector<std::pair<uint16_t, EC_POINT*> > Server::NetIN_kvpair(){
         EC_POINT_hex2point(curve,in_str.c_str(),v,NULL);
         out.emplace_back(std::make_pair(k,v));
     }
+
     return out;
 
 }
 
 void Server::NetOUT_flag_S_h(){
     size_t len = h_ex_ab.size();
+    //std::cout <<"len" <<len <<std::endl;
+    server_port->SendInteger(len);
+
     for(size_t i=0;i<len;i++){
+
         uint64_t send_len = h_ex_ab[i].size();
         server_port->SendInteger(send_len);
+       // std::cout <<"send len" <<send_len <<std::endl;
 
         for(size_t j = 0; j <send_len ; j++){
             auto out_str = std::string(EC_POINT_point2hex(curve,h_ex_ab[i][j],POINT_CONVERSION_COMPRESSED,NULL));
@@ -105,6 +121,8 @@ void Server::NetOUT_flag_S_h(){
     for(size_t i=0;i<len;i++){
         size_t send_len = S[i].size();
         server_port->SendInteger(send_len);
+       //std::cout <<"send len" <<send_len <<std::endl;
+
         for(size_t j = 0; j <send_len ; j++){
             auto out_str = std::string(EC_POINT_point2hex(curve,S[i][j],POINT_CONVERSION_COMPRESSED,NULL));
             server_port->SendString(out_str);
@@ -113,4 +131,6 @@ void Server::NetOUT_flag_S_h(){
     for(size_t i=0;i<len;i++){
         server_port->SendInteger(flag[i]);
     }
+
+
 }

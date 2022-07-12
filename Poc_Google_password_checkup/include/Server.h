@@ -41,6 +41,7 @@ class Server{
         std::vector<std::vector<EC_POINT*> > S;
         std::vector<std::vector<EC_POINT*> > h_ex_ab;
        
+        const int SALTLEN=16;
 
 
 };

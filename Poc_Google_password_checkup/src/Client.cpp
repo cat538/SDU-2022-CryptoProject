@@ -23,7 +23,7 @@ EC_POINT* Client::h_gen(uint64_t in){
     //EC_POINT_bn2point(curve,bn,out,NULL);
     BN_free(bn);
     BN_CTX_free(ctx);
-
+    
     return out;
 }
 
@@ -33,16 +33,26 @@ std::vector<EC_POINT*> Client::h_gen(){
     uint8_t hash_value[32];
     uint32_t out_size = 32;
     BIGNUM* bn = BN_new();
+    uint8_t hash1[32];
     
-    
+    uint8_t salt[SALTLEN];
+    memset( salt, 0x00, SALTLEN );
+    uint32_t t_cost = 2;            // 2-pass computation
+    uint32_t m_cost = (1<<16);      // 64 mebibytes memory usage
+    uint32_t parallelism = 4;       // number of threads and lanes
+
+
     uint64_t temp = 1;
     for(auto x:data){
         EC_POINT* h = EC_POINT_new(curve);
         BN_clear(bn);
-        EVP_Digest(&x,8,hash_value,&out_size,EVP_sha256(),NULL);
+        // EVP_Digest(&x,8,hash_value,&out_size,EVP_sha256(),NULL);
+        argon2i_hash_raw(t_cost, m_cost, parallelism, &x, 8, salt, SALTLEN, hash_value, out_size);
+         //for( int i=0; i<out_size; ++i ) printf( "%02x", hash1[i] ); printf( "\n" );
+
         BN_bin2bn(hash_value,16,bn);
         // auto test = BN_bn2hex(bn);
-        // std::cout<<test<<std::endl;
+
         
         k.emplace_back(((hash_value[1]<<8)|hash_value[0])&(mask));
         EC_POINT_mul(curve,h,bn,NULL,NULL, ctx);
@@ -115,14 +125,17 @@ void Client::NetOUT_kv_pair(){
 }
 
 void Client::NetIN_flag_S_h(std::vector<uint16_t> &flag,std::vector<std::vector<EC_POINT*> > &S,std::vector<std::vector<EC_POINT*> > &h_ex_ab){
+    cli_port->ReceiveInteger(data_len);
 
     h_ex_ab.resize(data_len);
+
     std::string in_str;
     in_str.resize(66);
     for(int i = 0; i <data_len;i++){
         uint64_t receive_len = 0;
         
         cli_port->ReceiveInteger(receive_len);
+
         for(uint64_t j = 0; j <receive_len ; j++){
             cli_port->ReceiveString(in_str);
             EC_POINT* temp = EC_POINT_new(curve);
@@ -130,17 +143,22 @@ void Client::NetIN_flag_S_h(std::vector<uint16_t> &flag,std::vector<std::vector<
             h_ex_ab[i].emplace_back(temp);
         }
     }
+
     S.resize(data_len);
     for(int i = 0; i <data_len;i++){
-        size_t receive_len;
+        size_t receive_len = 0;
         cli_port->ReceiveInteger(receive_len);
+
+
         for(size_t j = 0; j <receive_len ; j++){
+
             cli_port->ReceiveString(in_str);
             EC_POINT* temp = EC_POINT_new(curve);
             EC_POINT_hex2point(curve,in_str.c_str(),temp,NULL);
             S[i].emplace_back(temp);
         }
     }
+
     for(int i = 0; i <data_len;i++){
         uint16_t receive_flag;
         cli_port->ReceiveInteger(receive_flag);

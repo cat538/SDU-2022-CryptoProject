@@ -75,7 +75,7 @@ if(CMAKE_SYSTEM_NAME MATCHES "Windows")
 endif()
 find_package(OpenSSL)
 target_link_libraries(${CMAKE_PROJECT_NAME} OpenSSL::Crypto)
-
+target_link_libraries(${CMAKE_PROJECT_NAME} argon2)
 
 
 include(FindAVX)

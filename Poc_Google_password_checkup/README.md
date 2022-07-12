@@ -4,8 +4,8 @@
 
 -  CPP  version 
    - [x] basic SM2 DDH PSI protocol
-   - [ ] communication API Between Server and Client
-   - [ ] some advance PSI protocol
+   - [x] communication API Between Server and Client
+   - [x] argon2 password hash
 -  Rust version
    - [ ] basic protocol
    - [ ] commuication    

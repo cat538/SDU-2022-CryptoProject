@@ -25,7 +25,7 @@ class Client{
     private:
         EC_GROUP* curve;
         std::vector<uint64_t> data;
-        std::size_t data_len;
+        std::uint64_t data_len;
         EC_POINT* h_gen(uint64_t in);
         std::vector<EC_POINT*> h_gen();
         std::vector<uint16_t > k;
@@ -35,5 +35,7 @@ class Client{
         std::vector<BIGNUM*> a;
         uint16_t mask;
         NetIO* cli_port;
+
+        const int SALTLEN=16;
 
 };
