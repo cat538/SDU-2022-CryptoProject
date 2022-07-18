@@ -1,6 +1,5 @@
 // Vectorized implementation of SM4. Uses affine transformations and AES NI
 // to implement the SM4 S-Box.
-
 #include <x86intrin.h>
 #include "sm4.h"
 #include "sm4_local.h"
@@ -43,7 +42,7 @@
 # define ROUND AESNI_T
 # define INDEX_MASK INDEX_MASK_TBOX
 
-void sm4_ni_encrypt_block(const unsigned char *in, unsigned char *out, const sm4_key_t *key,
+void sm4_ni_encrypt_block(const uint8_t *in, uint8_t *out, const sm4_key_t *key,
     size_t blocks){
      const int *rk = (int *)key->rk;
     __m128i x0, x1, x2, x3, x4;

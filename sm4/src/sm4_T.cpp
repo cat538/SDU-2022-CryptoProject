@@ -33,10 +33,10 @@ void sm4_T_encrypt(const uint8_t *in, uint8_t *out, const sm4_key_t *ks)
 {
   uint32_t x0, x1, x2, x3;
 
-  x0 = load_u32_be(in, 0);
-  x1 = load_u32_be(in, 1);
-  x2 = load_u32_be(in, 2);
-  x3 = load_u32_be(in, 3);
+  x0 = load_uint32(in, 0);
+  x1 = load_uint32(in, 1);
+  x2 = load_uint32(in, 2);
+  x3 = load_uint32(in, 3);
 
   SM4_ROUNDS( 0,  1,  2,  3, SM4_T);
   SM4_ROUNDS( 4,  5,  6,  7, SM4_T);
@@ -47,19 +47,19 @@ void sm4_T_encrypt(const uint8_t *in, uint8_t *out, const sm4_key_t *ks)
   SM4_ROUNDS(24, 25, 26, 27, SM4_T);
   SM4_ROUNDS(28, 29, 30, 31, SM4_T);
 
-  store_u32_be(x3, out);
-  store_u32_be(x2, out + 4);
-  store_u32_be(x1, out + 8);
-  store_u32_be(x0, out + 12);
+  store_uint32(x3, out);
+  store_uint32(x2, out + 4);
+  store_uint32(x1, out + 8);
+  store_uint32(x0, out + 12);
 }
 
 void sm4_T_decrypt(const uint8_t *in, uint8_t *out, const sm4_key_t *ks){
   uint32_t x0, x1, x2, x3;
 
-  x0 = load_u32_be(in, 0);
-  x1 = load_u32_be(in, 1);
-  x2 = load_u32_be(in, 2);
-  x3 = load_u32_be(in, 3);
+  x0 = load_uint32(in, 0);
+  x1 = load_uint32(in, 1);
+  x2 = load_uint32(in, 2);
+  x3 = load_uint32(in, 3);
 
   SM4_ROUNDS(31, 30, 29, 28, SM4_T);
   SM4_ROUNDS(27, 26, 25, 24, SM4_T);
@@ -70,9 +70,9 @@ void sm4_T_decrypt(const uint8_t *in, uint8_t *out, const sm4_key_t *ks){
   SM4_ROUNDS( 7,  6,  5,  4, SM4_T);
   SM4_ROUNDS( 3,  2,  1,  0, SM4_T);
 
-  store_u32_be(x3, out);
-  store_u32_be(x2, out + 4);
-  store_u32_be(x1, out + 8);
-  store_u32_be(x0, out + 12);
+  store_uint32(x3, out);
+  store_uint32(x2, out + 4);
+  store_uint32(x1, out + 8);
+  store_uint32(x0, out + 12);
 }
 
