@@ -1,12 +1,19 @@
 import json
-
-class txparser:
+from Crypto.Hash import SHA256
+import binascii
+ 
+class txParser:
     tx = {}
     tx_in = []
     tx_out = []
     bytecode = ''
     def __init__(self):
         pass
+
+    def sha256d(self,st):
+        hash = SHA256.new()
+        hash.update(st)
+        return hash.digest()
 
     def byte2intLittle(self,bytecode,index,num):
         temp = bytes.fromhex(bytecode[index:index+num])[::-1]
@@ -70,6 +77,7 @@ class txparser:
 
 
     def transactionParser(self,bytecode):
+        txid = bytecode
         index = 0
         # 1. version
         self.tx["version"] = self.byte2intLittle(bytecode,index,8)
@@ -87,7 +95,7 @@ class txparser:
         for i in range(vin_num):
             index = self.txinParser(bytecode,index)
         self.tx['inputs']  = self.tx_in
-
+ 
         # 4. txout
 
         vout_num,index = self.compactSizeParser(bytecode,index)
@@ -98,6 +106,7 @@ class txparser:
 
         # 5.(optional) witness
         if "flag" in self.tx:
+            txid1 = txid[0:index]
             witness_num,index = self.compactSizeParser(bytecode,index)
             witness = []
             for i in range(witness_num):
@@ -106,18 +115,27 @@ class txparser:
                 witness.append(bytecode[index:index+witness_len])
                 index += witness_len
             self.tx['inputs'][0]['witness'] = witness
+            txid2 = txid[index:] # remove witness
+            txid = txid1 + txid2
+            txid = txid[0:8] + txid[12:] # remove optional flag
         
+
         # 6. lock time
         self.tx['lock time'] = self.byte2intLittle(bytecode,index,8)
+
+        # 7.(additional) hash
+        txid = self.sha256d(self.sha256d(bytes.fromhex(txid))) # get double sha256 hash result
+        txid = binascii.hexlify(txid[::-1]).decode() # get reverse hash hex result
+        self.tx['hash'] = txid
                 
 
 
 
 if __name__ == '__main__':
     bytecode = '020000000001012f6b048c07a78c9c0a4547aaf50358c385ed664f005a1969ab0a64e17591c1630000000000feffffff0250c3000000000000160014943f12cbfd998857aa42d728fa379ecca4958249b5545401000000001600148b02bddbce56f6f5abcc78a1b49dee5022a194ae02473044022042d15e0bf80401f5b9c370e53c278c60f4a6ef264f64e0c397cc1832cf78e1aa02202ad7cd0733eda9780f2940b58b5833d046e8bc862aa5ea8074807c765d399efb0121038ded4abbb861b9d3af9ce9a4c053141007fe2e13de076ec27955ddb20cf3c4a321e32200'
-    #bytecode = '020000000001010000000000000000000000000000000000000000000000000000000000000000ffffffff3103935f0b04bdfed3622f466f756e6472792055534120506f6f6c202364726f70676f6c642f02007cad0000a5b9bd820300ffffffff025e0cab25000000001976a9145e9b23809261178723055968d134a947f47e799f88ac0000000000000000266a24aa21a9ed4132e09573846ceea92219f3fd4dffbe8c00dc8db14f868027e61c7bb6e0d1760120000000000000000000000000000000000000000000000000000000000000000000000000'
+    #bytecode = '0100000001f7d7667421677ae9bce69e558048e0aca48d704c1dc446cdec80c5e77df7c124000000008b483045022100b92b0d78a1a72b25179260e96a15efe95f98962622fb232f92d6c6ef20e15e9b022061c946c3f976339e370eabd256d91aa4711bb9985330f7d18ee77987b0ca24300141046c04c02f1138f440e8c5e9099db938bfba93d0389528bb7f6bf423ae203a2edcfba133f0409023d7ea13ac01c5aeedaf0bbfbeb8b82e9b48410d93a296da5b0cffffffff0100f2052a010000001976a914e6a874331cddf113e6f424f547aa93c10755d5e688ac00000000'
     
-    txp = txparser()
+    txp = txParser()
     txp.transactionParser(bytecode)
     tx_json = json.dumps(txp.tx,indent=2)
     print(tx_json)

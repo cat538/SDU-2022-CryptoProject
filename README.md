@@ -1,7 +1,9 @@
 # SDU-2022-CryproProject
+
 2022 Spring 创新创业实践课实践项目小组repository
 
 队伍成员(首字母排序):
+
 - 端木浩杰
 - 刘齐
 - 王泰宇
@@ -43,7 +45,7 @@
 
 - [ ] Verify the some pitfalls with proof-of-concept code
 
-- [ ] Implement the above `ECMH` scheme
+- [x] Implement the above `ECMH` scheme
 
 - [ ] Implement a `PGP` scheme with `SM2`
 
@@ -58,3 +60,13 @@
 - [x] PoC impl of the scheme, or do implement analysis by Google
 
 - [ ] Implement `SM2` 2P decrypt with real network communication
+
+### Bitcoin
+
+- [x] send a tx on Bitcoin testnet, and parse the tx data down to every bit, better write script yourself.
+
+- [ ] forge a signature to pretend that you are Satoshi.
+
+### eth
+
+- [ ] research report on MPT.
