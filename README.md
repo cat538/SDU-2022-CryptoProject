@@ -23,7 +23,7 @@
 
 - [x] Do your best to optimize `SM3` implementation (software)
 
-- [ ] Implement Merkle Tree following [RFC6962](https://www.rfc-editor.org/info/rfc6962)
+- [x] Implement Merkle Tree following [RFC6962](https://www.rfc-editor.org/info/rfc6962)
 
   > Construct a Merkle tree with 10w leaf nodes
   >
@@ -33,13 +33,13 @@
 
 ### SM4
 
-- [ ] Do your best to optimize `SM4` implementation (software)
+- [x] Do your best to optimize `SM4` implementation (software)
 
 ### SM2
 
 - [ ] Report on the application of this deduce technique in Ethereum with `ECDSA`
 
-- [ ] Implement `SM2` with [RFC6979](https://www.rfc-editor.org/info/rfc6979)
+- [x] Implement `SM2` with [RFC6979](https://www.rfc-editor.org/info/rfc6979)
 
 - [ ] Verify the some pitfalls with proof-of-concept code
 
