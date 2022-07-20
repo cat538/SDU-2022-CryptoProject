@@ -39,7 +39,7 @@
 
 ### SM2
 
-- [ ] Report on the application of this deduce technique in Ethereum with `ECDSA`
+- [x] Report on the application of this deduce technique in Ethereum with `ECDSA`
 
 - [x] Implement `SM2` with [RFC6979](https://www.rfc-editor.org/info/rfc6979)
 
@@ -55,11 +55,11 @@
   >
   > Encrypt data: Symmetric encryption  
 
-- [ ] Implement `SM2` 2P sign with real network communication
+- [x] Implement `SM2` 2P sign with real network communication
 
 - [x] PoC impl of the scheme, or do implement analysis by Google
 
-- [ ] Implement `SM2` 2P decrypt with real network communication
+- [x] Implement `SM2` 2P decrypt with real network communication
 
 ### Bitcoin
 
