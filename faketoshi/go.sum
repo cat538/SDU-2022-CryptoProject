@@ -1,0 +1,4 @@
+github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
+github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
+github.com/roasbeef/btcd v0.0.0-20180418012700-a03db407e40d h1:3p7ZK0clyDVNQL3a5q4jTaTDv5YzW4AxkdftpBZxsrU=
+github.com/roasbeef/btcd v0.0.0-20180418012700-a03db407e40d/go.mod h1:A6JDd1s2zvd0LJNnhvindLqoL7gzisoxi5QlvRH7rmY=

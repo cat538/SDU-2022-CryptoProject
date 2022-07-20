@@ -43,7 +43,7 @@
 
 - [x] Implement `SM2` with [RFC6979](https://www.rfc-editor.org/info/rfc6979)
 
-- [ ] Verify the some pitfalls with proof-of-concept code
+- [x] Verify the some pitfalls with proof-of-concept code
 
 - [x] Implement the above `ECMH` scheme
 
@@ -65,7 +65,7 @@
 
 - [x] send a tx on Bitcoin testnet, and parse the tx data down to every bit, better write script yourself.
 
-- [ ] forge a signature to pretend that you are Satoshi.
+- [x] forge a signature to pretend that you are Satoshi.
 
 ### eth
 
