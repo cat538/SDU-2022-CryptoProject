@@ -1,0 +1,3 @@
+[submodule "poc-of-zkp/libsnark-version/depends/libsnark"]
+	path = poc-of-zkp/libsnark-version/depends/libsnark
+	url = https://github.com/scipr-lab/libsnark.git
