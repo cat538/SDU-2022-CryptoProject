@@ -70,18 +70,20 @@ set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/out)
 
 # 将源代码添加到此项目的可执行文件。
 if (CMAKE_SYSTEM_NAME MATCHES "Linux")
-    add_executable (${CMAKE_PROJECT_NAME} ${CMAKE_SOURCE_DIR}/src/sm3_attack.cpp)
+    add_executable (native ${CMAKE_SOURCE_DIR}/src/sm3_attack.cpp)
+    add_executable(native_hash_table ${CMAKE_SOURCE_DIR}/src/sm3_attack_hash_table.cpp)
+    add_executable(rho ${CMAKE_SOURCE_DIR}/src/rho.cpp)
 elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
-    add_executable (${CMAKE_PROJECT_NAME} ${CMAKE_SOURCE_DIR}/src/sm3_attack_win.cpp)
+    add_executable (${CMAKE_PROJECT_NAME} ${CMAKE_SOURCE_DIR}/src/sm3_attack_hash_table.cpp)
 endif()
 
 include(FindAVX)
-check_for_avx(${CMAKE_PROJECT_NAME})
+check_for_avx(native)
 
 
 
 if (HAVE_AVX2_EXTENSIONS)
-    target_compile_options(${CMAKE_PROJECT_NAME} PUBLIC -D_AVX2_)
+    target_compile_options(native PUBLIC -D_AVX2_)
     message(STATUS "optimization simd=AVX2")
 elseif(HAVE_AVX_EXTENSIONS)
     target_compile_options(${CMAKE_PROJECT_NAME} PUBLIC -D_AVX_)
@@ -91,7 +93,12 @@ endif()
 # 链接库
 
 if (CMAKE_SYSTEM_NAME MATCHES "Linux")
-    target_link_libraries(${CMAKE_PROJECT_NAME} gmssl -lomp)
+    find_package(OpenSSL)
+    target_link_libraries(native_hash_table OpenSSL::Crypto)
+    target_link_libraries(native gmssl -lomp)
+    target_link_libraries(rho OpenSSL::Crypto)
+
+
 elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
     target_link_libraries(${CMAKE_PROJECT_NAME} libcrypto)
 endif()

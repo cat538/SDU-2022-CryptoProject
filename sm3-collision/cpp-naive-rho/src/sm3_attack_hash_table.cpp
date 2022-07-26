@@ -104,11 +104,11 @@ void find_collision_birthday(){
 
 
 int main(){
-    
+    std::cout<<"attack len: "<<COLLISION_LEN<<std::endl;
     build_table();
     auto start_time = std::chrono::steady_clock::now(); 
     find_collision_birthday();
-
+	
     auto end_time = std::chrono::steady_clock::now(); 
  	auto running_time = end_time - start_time; 
 				std::cout << "Bithday Attack for SM3 = " 
