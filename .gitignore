@@ -1,0 +1,16 @@
+#==============================================================================#
+# This file specifies intentionally untracked files that git should ignore.
+#==============================================================================#
+
+#==============================================================================#
+# File extensions to be ignored anywhere in the tree.
+#==============================================================================#
+# OS X specific files.
+.DS_store
+# vscode settings directory
+.vscode
+# vs settings directory
+.vs
+# Intellij files
+.idea
+*.iml
