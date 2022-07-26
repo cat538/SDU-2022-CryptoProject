@@ -1,3 +1,6 @@
 [submodule "poc-of-zkp/libsnark-version/depends/libsnark"]
 	path = poc-of-zkp/libsnark-version/depends/libsnark
 	url = https://github.com/scipr-lab/libsnark.git
+[submodule "poc-google-password-checkup/phc-winner-argon2"]
+	path = poc-google-password-checkup/phc-winner-argon2
+	url = https://github.com/P-H-C/phc-winner-argon2.git
