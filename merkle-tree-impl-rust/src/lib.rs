@@ -5,6 +5,29 @@ pub mod tree;
 #[cfg(test)]
 mod tests {
     use super::hash_utils::*;
+    use super::element::*;
+    use super::tree::*;
+    use std::rc::Rc;
+
+    #[test]
+    fn test_build_tree(){
+        const TEST_SIZE: usize = 100000;
+        let elements = (0..TEST_SIZE).into_iter()
+            .map(|x| {
+                let buf = [0u8;8];
+                unsafe{ *(buf.as_ptr() as * mut usize) = x }
+                buf
+            })
+            .collect::<Vec<[u8;8]>>();
+        
+        let mut tree = MerkleTree::from_vec(elements);
+        assert_eq!(tree.height(), 17);
+
+        // let x = Rc::new([10u8;8]);
+        // let x_hash = Element::create_leaf(x);
+        // let level = tree.get_level(2).unwrap();
+        // level.iter().for_each(|x| println!("{x}"));
+    }
 
     #[test]
     fn test_hash_utils(){
