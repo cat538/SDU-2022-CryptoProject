@@ -8,4 +8,5 @@ edition = "2021"
 [dependencies]
 sha2="0.10.2"
 base64="0.13.0"
+hex="*"
 lazy_static="1.4.0"

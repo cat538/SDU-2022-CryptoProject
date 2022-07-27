@@ -30,13 +30,31 @@
 
 use sha2::{Sha256, Digest};
 use base64;
+use lazy_static::*;
+use std::sync::Mutex;
 
+#[derive(Debug)]
 pub struct MerkleHasher{
     hasher: Sha256
 }
 
+lazy_static! {
+    pub static ref HASHER: Mutex<MerkleHasher> = {
+        let hasher = Mutex::new(MerkleHasher::new());
+        hasher
+    };
+}
+
 impl MerkleHasher{
-    pub fn hash_leaf(&mut self, data: impl AsRef<[u8]>) -> String {
+    pub fn new() -> Self{
+        MerkleHasher{
+            hasher: Sha256::new()
+        }
+    }
+    pub fn hash_empty(&mut self) -> String{
+        base64::encode(self.hasher.finalize_reset())
+    }
+    pub fn hash_leaf(&mut self, data: &impl AsRef<[u8]>) -> String {
         // add 0x00 as prefix according to RFC6962
         let mut buff = vec![0x00u8;data.as_ref().len()+1];
         buff[1..].clone_from_slice(data.as_ref());
@@ -45,15 +63,16 @@ impl MerkleHasher{
         base64::encode(self.hasher.finalize_reset())
     }
 
-    pub fn hash_node(data: impl AsRef<[u8]>) -> String {
-        let mut hasher = Sha256::new();
-    
-        // add 0x00 as prefix according to RFC6962
-        let mut buff = vec![0x01u8;data.as_ref().len()+1];
-        buff[1..].clone_from_slice(data.as_ref());
-        hasher.update(buff);
+    pub fn hash_node(&mut self, left: &impl AsRef<[u8]>, right: &impl AsRef<[u8]>) -> String {
+        let l_len = left.as_ref().len();
+        let r_len = right.as_ref().len();
+        // add 0x01 as prefix according to RFC6962
+        let mut buff = vec![0x01u8;l_len+r_len+1];
+        buff[1..1+l_len].clone_from_slice(left.as_ref());
+        buff[1+l_len..].clone_from_slice(right.as_ref());
+        self.hasher.update(buff);
         // encode with base64 according to RFC6962
-        base64::encode(hasher.finalize_reset())
+        base64::encode(self.hasher.finalize_reset())
     }
 
 }
