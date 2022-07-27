@@ -1,7 +1,6 @@
-use std::fmt::Display;
+use std::fmt::{Display, Debug};
 use std::rc::Rc;
-
-use crate::hash_utils::*;
+use crate::hash_utils::HASHER;
 
 #[derive(Clone, Debug)]
 pub enum Element<T: AsRef<[u8]>> {
@@ -45,6 +44,22 @@ impl<T: AsRef<[u8]>> Element<T> {
             hash: combined_hash,
             left: Box::new(left),
             right: Box::new(right),
+        }
+    }
+}
+
+impl<T: AsRef<[u8]>+Debug> Display for Element<T>{
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self{
+            Element::Node { left, right, hash } => {
+                write!(f,"[Node {} (left: {} right: {})]", hash, left.hash().unwrap(), right.hash().unwrap())
+            },
+            Element::Leaf { data, hash } => {
+                write!(f,"[Leaf (hash: {} data: {:?})]", hash, data)
+            },
+            Element::Empty { hash: _ } => {
+                write!(f, "[Empty]")
+            },
         }
     }
 }
