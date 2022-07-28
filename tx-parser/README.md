@@ -5,26 +5,31 @@
 ### Step1: Get a bitcoin testnet address
 
 We use bitcoin core[test] to generate testnet address. In this test the private key is tb1qjsl39jlanxy902jz6u505du7ejjftqjfrga6nd.
-![0](tx-parser/figure/0.png)
+
+<img src="./figure/0.png" alt="0" style="zoom:33%;" />
 
 ### Step2: Require bitcoin testnet coins
 
 Require 0.0005 testnet coins to tb1qjsl39jlanxy902jz6u505du7ejjftqjfrga6nd in website <https://bitcoinfaucet.uo1.net>.
-![1](tx-parser/figure/1.png)
-![2](tx-parser/figure/2.png)
+<img src="./figure/1.png" alt="1" style="zoom:50%;" />
+<img src="./figure/2.png" alt="2" style="zoom:50%;" />
 
 The transaction detailed can be viewed in <https://live.blockcypher.com/btc-testnet>.
-![3](tx-parser/figure/3.png)
+
+<img src="./figure/3.png" alt="3" style="zoom:33%;" />
 
 ### Step3: Sending bitcoin testnet coins
 
 After sychronized with the Bitcoin testnet(about 40G, using 2 days), we can then create a transaction.
 In the wallet we can see 0.0005 testnet coins from previous transaction.
-![4](tx-parser/figure/wallet.png)
+
+<img src="./figure/wallet.png" alt="4" style="zoom:33%;" />
 
 Fill in the address, then a transaction is created.
-![5](tx-parser/figure/send1.png)
-![6](tx-parser/figure/send2.png)
+
+<img src="./figure/send1.png" alt="5" style="zoom:33%;" />
+
+<img src="./figure/send2.png" alt="6" style="zoom: 33%;" />
 
 The transaction can be seen online <https://live.blockcypher.com/btc-testnet/tx/bdd6a952621cc7653c43ebd6eb8e4d1e6b8b233d820e87aec2db8174675c291f/>.
 
@@ -69,4 +74,4 @@ Here's another example in step3. the prev_hash is exactly the same with that in 
 
 ### Result
 
-![script-parser](/tx-parser/figure/script.png)
+![script-parser](./figure/script.png)

@@ -24,7 +24,7 @@ cargo test
 cargo bench
 ```
 
-bench后打开`target/criterion/report/index.html`有详细对比分析报告图
+**bench后打开`target/criterion/report/index.html`有详细对比分析报告图**
 
 ## 项目依赖
 
@@ -39,3 +39,14 @@ bench后打开`target/criterion/report/index.html`有详细对比分析报告图
 | time (us)          | 900.62    | 3628.9    | 4847.9  | 5840.3  | 12351    |
 | throughput (MiB/s) | 1110.3232 | 275.57    | 206.27  | 171.22  | 80.964   |
 
+- **test**
+
+<img src="./README.assets/image-20220728225123634.png" alt="image-20220728225123634" style="zoom:50%;" />
+
+- **bench**
+
+<img src="./README.assets/image-20220728225647756.png" alt="image-20220728225647756" style="zoom: 50%;" />
+
+- **profile**
+
+<img src="./README.assets/image-20220728225816211.png" alt="image-20220728225816211" style="zoom:50%;" />
