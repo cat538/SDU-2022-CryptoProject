@@ -28,7 +28,7 @@ class merkle_internal_node
 private:
     /* data */
     std::vector<HASH_TYPE> hash_value;
-    
+    size_t leaf_nums;
 
 
 public:
@@ -38,10 +38,12 @@ public:
     merkle_internal_node(merkle_internal_node& in1,merkle_internal_node& in2);
     ~merkle_internal_node();
     std::vector<HASH_TYPE> get_hash_value();
-
+    size_t get_leaf_nums();
+    void print_hash();
 
 };
 
+bool internode_cmp(merkle_internal_node* in1,merkle_internal_node* in2);
 
 
 class merkle_tree
@@ -52,6 +54,8 @@ private:
     std::vector<merkle_leaf> leaf_node;
     size_t node_cnt;
     size_t level;
+    bool calculat_finish;
+    size_t leaf_level_start;
 public:
     merkle_tree(/* args */);
     ~merkle_tree();
@@ -60,7 +64,11 @@ public:
     void add(uint32_t value);
     void re_calcuate();
     std::vector<HASH_TYPE> make_proof();
-    
-    bool calculat_finish;
+    void print_internode();
+    size_t get_level_start();
+    size_t get_node_cnt();
+    merkle_internal_node get_node(size_t idx);
+    bool inclusion_proof(size_t idx,merkle_leaf* in);
+    bool consistency_proof(merkle_tree* old_tree); 
 };
 
