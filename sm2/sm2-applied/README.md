@@ -13,7 +13,7 @@ build后在`target/release`文件夹中找到可执行文件，命令行参数�
 
 如：`my_client.exe 127.0.0.1 8000`：
 
-![image-20220729193950085](README.assets/image-20220729193950085.png)
+![image-20220729193950085](./README.assets/image-20220729193950085.png)
 
 ## Feature
 
