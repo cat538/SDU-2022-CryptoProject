@@ -6,7 +6,6 @@
 
 - 端木浩杰
 - 刘齐
-- 王泰宇
 - 谢钟萱
 
 ## Project List
@@ -47,7 +46,7 @@
 
 - [x] Implement the above `ECMH` scheme
 
-- [ ] Implement a `PGP` scheme with `SM2`
+- [x] Implement a `PGP` scheme with `SM2`
 
   > Generate session key: `SM2` key exchange  
   >
@@ -69,4 +68,4 @@
 
 ### eth
 
-- [ ] research report on MPT.
+- [x] research report on MPT.
