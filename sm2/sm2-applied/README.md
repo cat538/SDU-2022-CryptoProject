@@ -1,11 +1,17 @@
 ## Usage
 
+`cargo test`执行单元测试，`cargo run`启动命令行程序
 
+```
+cargo test
+cargo run
+```
 
 ## Feature
 
 - 多线程server
 - 自定义了密钥协商协议，在建立session时通过两次交互获得对方信息，协议内容见注释
+- 自定义了序列化消息传输协议，依赖第三方库`serde`（Rust中常用的序列化"标准库"）
 - 选择`sm2_server`时，所有的消息经过SM2加密，签名
 - 以一个简单的命令行传递消息（自选server handler）为例
 
