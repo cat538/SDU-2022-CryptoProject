@@ -2,13 +2,5 @@ mod utils;
 mod consts;
 mod error;
 pub mod field;
+pub mod signature;
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_tt() {
-
-    }
-}

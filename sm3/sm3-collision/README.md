@@ -1,9 +1,11 @@
 ##  简介
-Rust 和 c++ 两种语言对于SM3的碰撞攻击，包括生日攻击和rho 攻击
+Rust 和 C++ 两种语言对于SM3的碰撞攻击，包括生日攻击和rho 攻击
+
 ## 依赖库
 - OpenSSL $\geq$ 1.10
 - GmSSL
 - Openmp
+- RustCrypto
 ## 使用说明
 ### c++ version
 #### OpenMP
