@@ -7,8 +7,8 @@ Weak version of sm2/ecdsa sign and verify code are implemented in sm2pitfall.go/
 The proof-of-concept code is implemented in TestXxx func. We still use randomly generated k ``k, err := rand.Int(rand.Reader, N)``, but it's leaked to test function.
 
 ```go
-go test -timeout 30s -run ^(TestLeakingk|TestReusingk|TestReusingkbyDifferentUsers|TestInverse|TestSamedkWithEcdsa|TestUncheckm)$ sig-pitfall/sm2-pitfall
-go test -timeout 30s -run ^(TestLeakingk|TestReusingk|TestReusingkbyDifferentUsers|TestInverse|TestUncheckm)$ sig-pitfall/ecdsa-pitfall
+go test -v -count=1 sig-pitfall/sm2-pitfall
+go test -v -count=1 sig-pitfall/ecdsa-pitfall
 ```
 
 ## Result
@@ -106,3 +106,8 @@ sm2✅
 === RUN   TestSamedkWithEcdsa
 Equal: d' = d = c0ee3b953af30ebfd152be766abdf00d8d19a5ca0356e0a588445c58ff5a1939
 ```
+
+## Result Figures
+
+![1](./figure/sm2.png)
+![2](./figure/ecdsa.png)

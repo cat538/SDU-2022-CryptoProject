@@ -1,6 +1,6 @@
 //#include <openssl/sm3.h>
 #include "LEA.h"
-#include "../SM3/SM3.h"
+#include "sm3.h"
 
 vector<BYTE> * SM3LEA::SM3_LEA(){
 	vector<BYTE>* new_msg = new vector<BYTE>();

@@ -11,9 +11,9 @@
   - [GB/T 35276-2017](https://openstd.samr.gov.cn/bzgk/gb/newGbInfo?hcno=2127A9F19CB5D7F20D17D334ECA63EE5 "SM2密码算法使用规范")
 
 ## Use
+
 ```go
-go test sm2_test.go
-go test conversion.go
+go test sm2
 ```
 
 ## Implementation
@@ -30,3 +30,7 @@ RFC6976: Introduction **deterministic DSA and ECDSA**, which random number is ge
   - 2.3.4.  Bit String to Octet String  ``conversion.go => func int2octets(x *big.Int, qlen int) []byte``  
 
 - **3.2.  Generation of k** :``conversion.go => func RandWithPrivkey(priv *sm2.PrivateKey, digest []byte) (k*big.Int)``
+
+## Result
+
+![1](./figure/sm2.png)

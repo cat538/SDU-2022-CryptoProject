@@ -2,7 +2,7 @@
 
 ## Use
 
-The general idea is the same as project sig-pitfall -> TestUncheckm func. The publickey is extracted from [genesis block](https://www.blockchain.com/btc/block/000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f). The secp256k1 curve and ecdsa verify func are from <github.com/roasbeef/btcd/btcec>
+The general idea is the same as project ``sig-pitfall -> TestUncheckm func``. The publickey is extracted from [genesis block](https://www.blockchain.com/btc/block/000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f). The secp256k1 curve and ecdsa verify function are from golang library [btcec](github.com/roasbeef/btcd/btcec).
 
 ```go
 go test -v -count=1 faketoshi
@@ -36,3 +36,6 @@ s:dfc57f810a4a9fc57330ccf4d0e3b6d520d1837277785aa99af75709ce338e13
 e:187a384026eb7e7d5b25a34fb671ba97329a859320092f8593eedb4d9340f294
 Signature Verified? true
 ```
+
+![1](./figure/1.png)
+![2](./figure/2.png)
