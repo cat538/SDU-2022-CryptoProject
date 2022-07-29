@@ -4,8 +4,16 @@
 
 ```
 cargo test
-cargo run
+cargo build --release
 ```
+
+build后在`target/release`文件夹中找到可执行文件，命令行参数传入IP和port即可（有命令行提示）。
+
+注意默认情况下是一个简单的 echo 服务器， 我还实现了其它几个服务，如HTTP等，可以修改源码中的register，修改对应的回调函数测试相应的效果。
+
+如：`my_client.exe 127.0.0.1 8000`：
+
+![image-20220729193950085](README.assets/image-20220729193950085.png)
 
 ## Feature
 

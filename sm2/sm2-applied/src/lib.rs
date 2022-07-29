@@ -252,7 +252,13 @@ pub fn sm2_server(
                         };
                         let resp = serde_json::to_string(&info).unwrap();
                         stream.write(resp.as_bytes()).unwrap();
+                        
+                        // 阻塞，直到收到message
+                        let recv_len = stream.read(&mut buff).unwrap();
 
+                        let echo_msg = &buff[0..recv_len];
+                        stream.write(echo_msg).unwrap();
+                        
                         // let call_back = Arc::clone(&handle_client);
                         // pool.execute(move || call_back(stream));
                     },
