@@ -1,0 +1,24 @@
+[package]
+name = "sm2-impl"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+# elliptic-curve = { version = "0.12.0", features=["sec1"]}
+# sm3="0.3.0"
+num-bigint = "0.4"
+num-traits = "0.2"
+byteorder = "1.0.0"
+rand="0.8.5"
+# hex="0.4.3"
+
+[dev-dependencies]
+# proptest = "1.0"
+hex-literal = "0.3"
+
+[features]
+# default = ["arithmetic", "ecdsa"]
+# arithmetic = ["elliptic-curve/arithmetic"]
+# ecdsa=[]
