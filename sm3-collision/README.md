@@ -6,6 +6,20 @@ Rust 和 c++ 两种语言对于SM3的碰撞攻击，包括生日攻击和rho 攻
 - Openmp
 ## 使用说明
 ### c++ version
+#### OpenMP
+```shell
+sudo apt-get install libomp-dev
+```
+#### GmSSL
+```
+cd cpp-native-rho
+cd GmSSL
+git submodule init && git submodule update
+mkdir build && cd build && cmake .. -DCMAKE_INSTALL_PREFIX=.. or <path>
+make 
+make install
+```
+#### project executable
 ```shell
 cd cpp-native-rho
 mkdir build

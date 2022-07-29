@@ -4,3 +4,6 @@
 [submodule "poc-google-password-checkup/phc-winner-argon2"]
 	path = poc-google-password-checkup/phc-winner-argon2
 	url = https://github.com/P-H-C/phc-winner-argon2.git
+[submodule "sm3-collision/cpp-naive-rho/GmSSL"]
+	path = sm3-collision/cpp-naive-rho/GmSSL
+	url = https://github.com/guanzhi/GmSSL.git

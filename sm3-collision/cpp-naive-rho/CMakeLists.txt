@@ -52,10 +52,12 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
 
 # 头文件目录
 include_directories("${PROJECT_SOURCE_DIR}/include")
+link_directories(${PROJECT_SOURCE_DIR}/lib)
 
 # 链接库目录
 if (CMAKE_SYSTEM_NAME MATCHES "Linux")
     link_directories(${PROJECT_SOURCE_DIR}/lib/linux)
+
 elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
     link_directories(${PROJECT_SOURCE_DIR}/lib/win)
 else(CMAKE_SYSTEM_NAME MATCHES "Darwin")
@@ -94,8 +96,10 @@ endif()
 
 if (CMAKE_SYSTEM_NAME MATCHES "Linux")
     find_package(OpenSSL)
+    find_package(OpenMP)
     target_link_libraries(native_hash_table OpenSSL::Crypto)
-    target_link_libraries(native gmssl -lomp)
+    target_link_libraries(native gmssl)
+    target_link_libraries(native OpenMP::OpenMP_C)
     target_link_libraries(rho OpenSSL::Crypto)
 
 
