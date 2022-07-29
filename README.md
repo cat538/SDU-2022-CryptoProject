@@ -28,8 +28,8 @@
   <tr>
     <td rowspan="2" align="center"> 1</td>
     <td rowspan="2" >implement the naïve birthday attack of reduced <code>SM3</code>
-    <li> 📢 OpenMP parallel computing
-    <li> 📢 Rust version multithreading attack with std::threadis done
+    <li> 📢 C++版本使用OpenMP 并行优化
+    <li> 📢 Rust 版本使用<code>std::thread</code>并行优化
     </td>
     <td><a href="./sm3/sm3-collision/cpp-naive-rho">cpp-naive-rho</a>
     </td>
@@ -41,7 +41,8 @@
   </tr>
   <tr>
     <td rowspan="2" align="center"> 2</td>
-    <td rowspan="2" >implement the Rho method of reduced <code>SM3</code></td>
+    <td rowspan="2" >implement the Rho method of reduced <code>SM3</code>
+    </td>
     <td><a href="./sm3/sm3-collision/cpp-naive-rho">cpp-naive-rho</a></td>
     <td align="center">🎣</td>
   </tr>
@@ -57,7 +58,9 @@
   </tr>
   <tr>
     <td rowspan="2" align="center">4</td>
-    <td rowspan="2" >do your best to optimize <code>SM3</code> implementation (software)</td>
+    <td rowspan="2" >do your best to optimize <code>SM3</code> implementation (software)
+    <li> 📢 Rust 版本考虑侧信道攻击，消除了所有分支运算；支持profile图表自动化生成
+    </td>
     <td><a href="./sm3/sm3-impl/sm3-cpp">sm3-cpp</a></td>
     <td align="center">🐙</td>
   </tr>
@@ -87,17 +90,27 @@
     <td align="center">🦀 </td>
   </tr>
   <tr>
+    <td align="center">6</td>
+    <td>Implement Hash Wires system</td>
+    <td > <a href="./hash-wires">hash-wires</a></td>
+    <td align="center">🦀</td>
+  </tr>
+  <tr>
     <td align="center">7</td>
     <td>report on the application of this deduce technique in Ethereum with <code>ECDSA</code></td>
     <td><a href="./sm2/ecdsa-pk-recovery.md" >ecdsa-pk-recovery</a></td>
     <td align="center">🦀</td>
   </tr>
+
   <tr>
     <td rowspan="2" align="center">8</td>
-    <td rowspan="2">impl <code>sm2</code> with <a herf="https://www.rfc-editor.org/info/rfc6980"> RFC6979 </a></td>
+    <td rowspan="2">impl <code>sm2</code> with <a herf="https://www.rfc-editor.org/info/rfc6980"> RFC6979 </a>
+    <li> 📢 Rust version是一个全新的轮子，除了解码编码之外几乎做到self-contained，使用Montegomery reduction优化
+    </td>
     <td><a href="./sm2/sm2-impl-go" target="_blank" rel="noopener noreferrer">sm2-go</a></td>
     <td align="center">🐙</td>
   </tr>
+  
   <tr>
     <td ><a href="./sm2/sm2-impl-rust">sm2-rust</a></td>
     <td align="center">🦀</td>
@@ -175,8 +188,7 @@
   </tr>
   <tr>
     <td align="center">额外</td>
-    <td>  Do your best to optimize <code>SM4</code> implementation (software)
-</td>
+    <td>  Do your best to optimize <code>SM4</code> implementation (software)</td>
     <td><a href="./sm4">sm4</a></td>
     <td align="center">🐙</td>
   </tr>
@@ -185,12 +197,6 @@
         ❌未完成
     </td> 
    </tr>
-  <tr>
-    <td align="center">6</td>
-    <td>Try to Implement this scheme(below)</td>
-    <td></td>
-    <td></td>
-  </tr>
   <tr>
     <td align="center">18</td>
     <td>Find a key with hash value “sdu_cst_20220610” under a message composed of your name followed by your student ID. For example, “San Zhan 202000460001”.</td>
