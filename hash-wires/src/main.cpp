@@ -74,9 +74,9 @@ auto hash_wires_sys(vector<uint8_t>&& seed) {
 	auto kdf_res = utils::crypto_kdf(std::move(seed), subkey_lens, "");
 
 	vector<uint8_t> seed_d	= kdf_res[0];
-	vector<uint8_t> s_1		= kdf_res[1];
-	vector<uint8_t> s_2		= kdf_res[2];
-	vector<uint8_t> s_3		= kdf_res[3];
+	vector<uint8_t> s_1	= kdf_res[1];
+	vector<uint8_t> s_2	= kdf_res[2];
+	vector<uint8_t> s_3	= kdf_res[3];
 	vector<uint8_t> sf_seed	= kdf_res[4];
 	vector<uint8_t> salt_a	= kdf_res[5];
 	vector<uint8_t> salt_b	= kdf_res[6];
