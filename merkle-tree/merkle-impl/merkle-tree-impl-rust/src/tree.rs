@@ -1,6 +1,5 @@
 use std::collections::{BTreeMap, VecDeque};
 use std::collections::vec_deque::Iter;
-use std::fmt::Display;
 use std::rc::Rc;
 
 use crate::element::Element;
@@ -29,8 +28,7 @@ impl<T: AsRef<[u8]> + Clone> MerkleTree<T> {
     /// # Examples
     ///
     /// ```
-    /// extern crate merkle_tree;
-    /// use merkle_tree::MerkleTree;
+    /// use crate::tree::MerkleTree;
     ///
     /// let tree = MerkleTree::new();
     /// assert_eq!(0, tree.len());
@@ -58,8 +56,7 @@ impl<T: AsRef<[u8]> + Clone> MerkleTree<T> {
     /// # Examples
     ///
     /// ```
-    /// extern crate merkle_tree;
-    /// use merkle_tree::MerkleTree;
+    /// use crate::tree::MerkleTree;
     ///
     /// const TEST_SIZE: usize = 100000;
     /// let elements = (0..TEST_SIZE).into_iter()
@@ -96,8 +93,7 @@ impl<T: AsRef<[u8]> + Clone> MerkleTree<T> {
     /// # Examples
     ///
     /// ```
-    /// extern crate merkle_tree;
-    /// use merkle_tree::MerkleTree;
+    /// use crate::tree::MerkleTree;
     ///
     /// let mut tree = MerkleTree::new();
     /// tree.push(1);
@@ -114,8 +110,7 @@ impl<T: AsRef<[u8]> + Clone> MerkleTree<T> {
     /// # Examples
     ///
     /// ```
-    /// extern crate merkle_tree;
-    /// use merkle_tree::MerkleTree;
+    /// use crate::tree::MerkleTree;
     ///
     /// let mut tree = MerkleTree::from_vec(vec![1, 2, 3]);
     /// assert!(tree.remove(1));
@@ -136,8 +131,7 @@ impl<T: AsRef<[u8]> + Clone> MerkleTree<T> {
     /// # Examples
     ///
     /// ```
-    /// extern crate merkle_tree;
-    /// use merkle_tree::MerkleTree;
+    /// use crate::tree::MerkleTree;
     ///
     /// let mut tree = MerkleTree::new();
     /// tree.push(1);
@@ -156,8 +150,7 @@ impl<T: AsRef<[u8]> + Clone> MerkleTree<T> {
     /// # Examples
     ///
     /// ```
-    /// extern crate merkle_tree;
-    /// use merkle_tree::MerkleTree;
+    /// use crate::tree::MerkleTree;
     ///
     /// let mut tree = MerkleTree::new();
     /// tree.push(1);
@@ -176,55 +169,16 @@ impl<T: AsRef<[u8]> + Clone> MerkleTree<T> {
         }
     }
 
-    /// Returns the number of elements in the three
-    /// # Examples
-    ///
-    /// ```
-    /// extern crate merkle_tree;
-    /// use merkle_tree::MerkleTree;
-    ///
-    /// let mut tree = MerkleTree::new();
-    /// assert_eq!(tree.len(), 0);
-    /// tree.push(1);
-    /// assert_eq!(tree.len(), 1);
-    /// ```
+
     pub fn len(&self) -> usize {
         self.count
     }
 
-    /// Returns the height of the three
-    /// # Examples
-    ///
-    /// ```
-    /// extern crate merkle_tree;
-    /// use merkle_tree::MerkleTree;
-    ///
-    /// let mut tree = MerkleTree::new();
-    /// assert_eq!(tree.height(), 0);
-    /// tree.push(1);
-    /// assert_eq!(tree.height(), 0);
-    /// tree.push(2);
-    /// assert_eq!(tree.height(), 1);
-    /// tree.push(3);
-    /// assert_eq!(tree.height(), 2);
-    ///
-    /// ```
     pub fn height(&self) -> usize {
         self.height
     }
 
-    /// Returns `true` if the `MerkleTree` is empty.
-    /// # Examples
-    ///
-    /// ```
-    /// extern crate merkle_tree;
-    /// use merkle_tree::MerkleTree;
-    ///
-    /// let mut tree = MerkleTree::new();
-    /// assert!(tree.is_empty());
-    /// tree.push(1);
-    /// assert!(!tree.is_empty());
-    /// ```
+
     pub fn is_empty(&self) -> bool {
         self.storage.is_empty()
     }
@@ -253,8 +207,7 @@ impl<T: AsRef<[u8]> + Clone> MerkleTree<T> {
     /// # Examples
     ///
     /// ```
-    /// extern crate merkle_tree;
-    /// use merkle_tree::MerkleTree;
+    /// use crate::tree::MerkleTree;
     ///
     /// let tree = MerkleTree::from_vec(vec![1, 2, 3, 4]);
     /// let vec: Vec<Rc<i32>> = tree.iter().collect();
@@ -268,8 +221,7 @@ impl<T: AsRef<[u8]> + Clone> MerkleTree<T> {
     /// # Examples
     ///
     /// ```
-    /// extern crate merkle_tree;
-    /// use merkle_tree::MerkleTree;
+    /// use crate::tree::MerkleTree;
     ///
     /// let tree = MerkleTree::from_vec(vec![1, 2, 3, 4]);
     /// let proof = tree.get_proof(3);
@@ -291,8 +243,7 @@ impl<T: AsRef<[u8]> + Clone> MerkleTree<T> {
     /// Returns nth level of the MHT
     /// #Example
     /// ```
-    /// extern crate merkle_tree;
-    /// use merkle_tree::MerkleTree;
+    /// use crate::tree::MerkleTree;
     ///
     /// let tree = MerkleTree::from_vec(vec![1, 2, 3, 4]);
     /// let proof = tree.print_level(2);
