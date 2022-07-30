@@ -159,7 +159,7 @@
   <tr>
     <td align="center">14</td>
     <td>PoC impl of the scheme, or do implement analysis by Google</td>
-    <td > <a href="./poc-of-zkp">poc-of-zkp</a></td>
+    <td > <a href="./poc-of-zkp">poc-google-password-checkup</a></td>
     <td align="center">🎣</td>
   </tr>
   <tr>
