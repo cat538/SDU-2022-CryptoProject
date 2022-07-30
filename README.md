@@ -181,6 +181,12 @@
     <td align="center">🦀️</td>
   </tr>
   <tr>
+    <td align="center">18</td>
+    <td>Find a key with hash value “sdu_cst_20220610” under a message composed of your name followed by your student ID. For example, “San Zhan 202000460001”.</td>
+    <td> <a href="./cryptanalysis"> cryptanalysis </a> </td>
+    <td align="center">🐙</td>
+  </tr>
+  <tr>
     <td align="center">20</td>
     <td>Try to build zkp app to proof CET6 Score &gt; 425</td>
     <td><a href="./poc-of-zkp">poc-of-zkp</a></td>
@@ -197,12 +203,6 @@
         ❌未完成
     </td> 
    </tr>
-  <tr>
-    <td align="center">18</td>
-    <td>Find a key with hash value “sdu_cst_20220610” under a message composed of your name followed by your student ID. For example, “San Zhan 202000460001”.</td>
-    <td></td>
-    <td></td>
-  </tr>
   <tr>
     <td align="center">19</td>
     <td>Find a 64-byte message under some k fulfilling that their hash value is symmetrical.</td>
