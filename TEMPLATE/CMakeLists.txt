@@ -11,44 +11,22 @@ message(STATUS "PROJECT_SOURCE_DIR: ${PROJECT_SOURCE_DIR}")
 message(STATUS "default flag: ${CMAKE_CXX_FLAGS}")
 message(STATUS "debug flag: ${CMAKE_CXX_FLAGS_DEBUG}")
 message(STATUS "release flag: ${CMAKE_CXX_FLAGS_RELEASE}")
-# -march = native 自检测cpu对程序优化
-# -Wl 将后面的参数传给linker --no-as-needed 不忽略链接时没有用到的动态库
+
+# 这里自定义Debug Release编译选项; 如果不设置亦有default配置; -maes -pthread debug mode 有时需要
 if(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
-    if( CMAKE_BUILD_TYPE STREQUAL "Debug" )
-        # set(CMAKE_CXX_FLAGS_DEBUG "-g -Wall -Wunused-function -pthread -maes -Wl,--no-as-needed -ldl")
-        # set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99 -g -pthread -maes")
-        message(STATUS "gcc - Debug mode")
-    elseif( CMAKE_BUILD_TYPE STREQUAL "Release" ) 
-        # set(CMAKE_CXX_FLAGS_RELEASE "-Ofast -DNDEBUG -pthread -march=native -pipe -Wl,--no-as-needed -ldl")
-        # set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99 -Ofast -pthread -maes")
-        message(STATUS "gcc - Release mode")
-    endif()
+    # set(CMAKE_CXX_FLAGS_DEBUG "-g -Wall -Wunused-function -Wl,--no-as-needed -ldl")
+    # set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS} -g")
+    # set(CMAKE_CXX_FLAGS_RELEASE "-Ofast -DNDEBUG -pthread -march=native -pipe -Wl,--no-as-needed -ldl")
+    # set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS} -Ofast")
 elseif(${CMAKE_CXX_COMPILER_ID} STREQUAL "MSVC")
-    if( CMAKE_BUILD_TYPE STREQUAL "Debug" )
-        message(STATUS "MSVC - Debug mode")
-    elseif( CMAKE_BUILD_TYPE STREQUAL "Release" ) 
-        message(STATUS "MSVC - Release mode")
-    endif()
-elseif(${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
-    if( CMAKE_BUILD_TYPE STREQUAL "Debug" )
-        message(STATUS "MSVC - Debug mode")
-    elseif( CMAKE_BUILD_TYPE STREQUAL "Release" ) 
-        message(STATUS "MSVC - Release mode")
-    endif()
+elseif(${CMAKE_CXX_COMPILER_ID} STREQUAL "CLANG")
 elseif(${CMAKE_CXX_COMPILER_ID} STREQUAL "AppleClang")
-    if( CMAKE_BUILD_TYPE STREQUAL "Debug" )
-        message(STATUS "MSVC - Debug mode")
-    elseif( CMAKE_BUILD_TYPE STREQUAL "Release" ) 
-        message(STATUS "MSVC - Release mode")
-    endif()
 endif()
 
 message(STATUS "release flag: ${CMAKE_CXX_FLAGS_RELEASE}")
 
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
-
-
 
 # 头文件目录
 include_directories("${PROJECT_SOURCE_DIR}/include")
